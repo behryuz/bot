@@ -27,6 +27,14 @@ func (c *Commander) HandleUpdate(update tgbotapi.Update) {
 			log.Printf("recovered from panic: %v", panicValue)
 		}
 	}()
+
+	if update.CallbackQuery != nil {
+		msg := tgbotapi.NewMessage(
+			update.CallbackQuery.Message.Chat.ID,
+			"Data: "+update.CallbackQuery.Data,
+		)
+		c.bot.Send(msg)
+	}
 	switch update.Message.Command() {
 	case "help":
 		c.Help(update.Message)
